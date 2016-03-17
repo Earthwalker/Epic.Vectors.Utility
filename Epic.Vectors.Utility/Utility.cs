@@ -15,6 +15,17 @@ namespace Epic.Vectors.Utility
     public static class Utility
     {
         /// <summary>
+        /// Gets the angle between two points.
+        /// </summary>
+        /// <param name="source">The source <see cref="Vector2"/>.</param>
+        /// <param name="other">The other <see cref="Vector2"/>.</param>
+        /// <returns>The angle in degrees.</returns>
+        public static double Angle(this Vector2<int> source, Vector2<int> other)
+        {
+            return Math.Atan2(source.Y - other.Y, other.X - source.X) * (180.0 / Math.PI);
+        }
+
+        /// <summary>
         /// Gets the distance between two points.
         /// </summary>
         /// <param name="source">The source <see cref="Vector2"/>.</param>
