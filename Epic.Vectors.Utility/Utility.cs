@@ -7,6 +7,7 @@
 namespace Epic.Vectors.Utility
 {
     using System;
+    using System.Collections.Generic;
     using Epic.Vectors;
 
     /// <summary>
@@ -35,6 +36,74 @@ namespace Epic.Vectors.Utility
         {
             // d = √ (x2-x1)^2 + (y2-y1)^2
             return Math.Sqrt(Math.Pow(other.X - source.X, 2) + Math.Pow(other.Y - source.Y, 2));
+        }
+
+        /// <summary>
+        /// Swaps the values from the specified variables.
+        /// </summary>
+        /// <typeparam name="T">The <see cref="Type"/>.</typeparam>
+        /// <param name="left">Left-hand variable.</param>
+        /// <param name="right">Right-hand variable.</param>
+        private static void Swap<T>(ref T left, ref T right)
+        {
+            T temp;
+            temp = left;
+            left = right;
+            right = temp;
+        }
+
+        /// <summary>
+        /// Creates a line to the specified point.
+        /// </summary>
+        /// <param name="source">Starting <see cref="Vector2{int}"/></param>
+        /// <param name="end">Ending <see cref="Vector2{int}"/>,</param>
+        /// <returns>The list of points.</returns>
+        public static List<Vector2<int>> Line(this Vector2<int> source, Vector2<int> end)
+        {
+            var result = new List<Vector2<int>>();
+
+            // split the vectors into their components
+            var sourceX = source.X;
+            var sourceY = source.Y;
+            var endX = end.X;
+            var endY = end.Y;
+
+            var steep = Math.Abs(sourceY - endY) > Math.Abs(endX - sourceX);
+
+            if (steep)
+            {
+                Swap(ref sourceX, ref sourceY);
+                Swap(ref endX, ref endY);
+            }
+
+            if (source.X > end.X)
+            {
+                Swap(ref sourceX, ref endX);
+                Swap(ref sourceY, ref endY);
+            }
+
+            var diff = Vector2.Create(end.X - source.X, Math.Abs(end.Y - source.Y));
+            var err = (diff.X / 2);
+            var ystep = (source.Y < end.Y ? 1 : -1);
+            var y = source.Y;
+
+            for (int x = source.X; x <= end.X; ++x)
+            {
+                if (steep)
+                    result.Add(Vector2.Create(y, x));
+                else
+                    result.Add(Vector2.Create(x, y));
+
+                err = err - diff.Y;
+
+                if (err < 0)
+                {
+                    y += ystep;
+                    err += diff.X;
+                }
+            }
+
+            return result;
         }
 
         /// <summary>
