@@ -27,6 +27,19 @@ namespace Epic.Vectors.Utility
         }
 
         /// <summary>
+        /// Gets a <see cref="Vector2{double}"/> from the specified angle.
+        /// </summary>
+        /// <param name="angle">The angle in degrees.</param>
+        /// <returns>The <see cref="Vector2{double}"/>.</returns>
+        public static Vector2<double> FromAngle(double angle)
+        {
+            // convert angle to radians
+            angle = Math.PI * angle / 180.0;
+
+            return Vector2.Create(Math.Cos(angle), -Math.Sin(angle));
+        }
+
+        /// <summary>
         /// Gets the distance between two points.
         /// </summary>
         /// <param name="source">The source <see cref="Vector2"/>.</param>
